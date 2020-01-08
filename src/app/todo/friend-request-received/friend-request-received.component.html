@@ -1,0 +1,24 @@
+<mat-card>
+  <mat-list role="list">
+    <mat-list-item *ngFor="let friend of friendsList" role="listitem"
+      >{{ friend.friendName }}
+      &nbsp;
+      <button
+        (click)="AcceptFriendRequest(friend)"
+        mat-raised-button
+        color="accent"
+      >
+        Accept
+      </button>
+      &nbsp;
+      <button
+        (click)="RejectFriendRequest(friend)"
+        mat-raised-button
+        color="warn"
+      >
+        Reject
+      </button>
+      &nbsp;
+    </mat-list-item>
+  </mat-list>
+</mat-card>

@@ -1,0 +1,57 @@
+<mat-card *ngIf="hideFriendsInSingleUser === 'multi-user'">
+  <mat-list role="list">
+    <mat-list-item *ngIf="userFriends?.length == 0" role="listitem"
+      >No Friends Yet</mat-list-item
+    >
+    <mat-list-item *ngFor="let friend of userFriends" role="listitem"
+      >{{ friend.friendName }} &nbsp;
+      <button
+        (click)="getFriendList(friend.friendId)"
+        mat-raised-button
+        class="btn btn-success"
+      >
+        <i class="fa fa-check" aria-hidden="true"></i> Friends
+      </button>
+      &nbsp;
+      <button (click)="unFriend(friend)" mat-raised-button color="accent">
+        UnFriend
+      </button></mat-list-item
+    >
+    <hr />
+    <hr />
+    <hr />
+    <mat-list-item *ngIf="userList?.length != 0" role="listitem"
+      >Send Friend Request</mat-list-item
+    >
+
+    <mat-list-item *ngFor="let user of userList" role="listitem">
+      <ng-container *ngIf="!user?.isFriend">
+        {{ user.firstName }} &nbsp;
+        <button
+          (click)="sendFriendRequest(user)"
+          mat-raised-button
+          color="accent"
+        >
+          Add Friend
+        </button>
+      </ng-container>
+    </mat-list-item>
+  </mat-list>
+</mat-card>
+
+<!-- Further future enhancements -->
+<!-- <mat-card>
+        <mat-list  role="list">
+                <mat-list-item *ngFor="let user of userList" role="listitem">{{user.firstName}}   <button (click)="sendFriendRequest(user)" mat-raised-button color="accent">Add Friend</button></mat-list-item>
+        </mat-list>
+</mat-card> -->
+
+<!-- 
+*ngIf="(hideFriendsInSingleUser=== 'multi-user')"
+*ngIf="(hideFriendsInSingleUser=== 'multi-user')" -->
+
+<!-- !(hideFriendsInSingleUser=== 'multi-user')
+!(hideFriendsInSingleUser=== 'multi-user') -->
+
+<!-- && (hideFriendsInSingleUser === 'manage-friends')
+&& (hideFriendsInSingleUser === 'manage-friends') -->

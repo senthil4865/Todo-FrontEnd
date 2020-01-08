@@ -1,0 +1,61 @@
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+  <mat-card class="box">
+    <mat-card-header>
+      <mat-card-title>Log in</mat-card-title>
+    </mat-card-header>
+
+    <form id="loginForm" #loginForm="ngForm" class="example-form">
+      <mat-card-content>
+        <mat-form-field class="example-full-width">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="Email" [formControl]="email" required />
+          <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            placeholder="Password"
+            name="password"
+            type="password"
+            minlength="8"
+            #pwd="ngModel"
+            (keydown)="loginKeyDown($event)"
+            [(ngModel)]="password"
+          />
+          <mat-hint>Min 8 characters</mat-hint>
+          <mat-error *ngIf="pwd.errors?.required"
+            >You must enter a value</mat-error
+          >
+          <mat-error *ngIf="pwd.errors?.minlength"
+            >You must enter atleast 8 characters</mat-error
+          >
+        </mat-form-field>
+      </mat-card-content>
+      <button
+        mat-stroked-button
+        color="accent"
+        (click)="signInFunction()"
+        [disabled]="!loginForm.valid"
+        class="btn-block"
+      >
+        Log In</button
+      ><br />
+      <a
+      class="text-center"
+      mat-raised-link
+      [routerLink]="['/user/signup']"
+      style="text-decoration: none;display: block;"
+      >Sign Up</a>
+      <a
+      class="text-center"
+        mat-raised-link
+        [routerLink]="['/user/forgot-password']"
+        style="text-decoration: none;display: block;"
+        >Forgot Password?</a
+
+      >
+    </form>
+  </mat-card>
+</div>

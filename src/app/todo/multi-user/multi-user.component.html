@@ -1,0 +1,190 @@
+
+
+<navbar></navbar>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+    <mat-card class="overflow-list">
+      <friend-request-send hideFriendsInSingleUser="{{ currentView }}" (notifyToGetFriendTodo)="getFriendList($event)">
+      </friend-request-send>
+    </mat-card>
+    <mat-card>
+      <mat-card class="overflow-list">
+        <h3>Lists</h3>
+        <div *ngFor="let list of List">
+          <span>{{ list.ListName }}</span>
+          <span class="dropdown">
+            <a class="btn btn-link" id="dropdownSubTask" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false" matTooltip="Options related to List">
+              <i class="fa fa-ellipsis-h"></i>
+            </a>
+
+            <span class="dropdown-menu" aria-labelledby="dropdownSubTask">
+              <a class="dropdown-item" (click)="updateList(list.ListId)">
+                <i class="fa fa-edit"></i> &nbsp;
+
+                <span>Edit List</span>
+              </a>
+
+              <a class="dropdown-item" (click)="deleteTodoList(list.ListId, list.listName)">
+                <i class="fa fa-trash"></i> &nbsp;
+                <span>Delete List</span>
+              </a>
+            </span>
+          </span>
+          <button mat-button *ngIf="!friendMode" color="accent" (click)="addTodoUnderList(list._id, list.ListId); sidenav.toggle()">
+            Add Todo
+          </button>
+          <button mat-button *ngIf="friendMode" color="accent" (click)="addTodoUnderList(list._id, list.ListId); sidenav.toggle()">
+            View Todo
+          </button>
+        </div>
+        <div *ngIf="!friendMode">Create List</div>
+        <mat-form-field *ngIf="!friendMode" class="example-full-width">
+          <input matInput placeholder="Create List" [(ngModel)]="listName" value="Sushi" />
+        </mat-form-field>
+        <button *ngIf="!friendMode" mat-button (click)="createList()" color="accent">
+          Create List
+        </button>
+        <button *ngIf="friendMode" mat-button (click)="friendModeOff()" color="accent">
+          Get My List
+        </button>
+      </mat-card>
+    </mat-card>
+  </mat-sidenav>
+
+  <mat-sidenav-content style="background-image: linear-gradient(to bottom right, #f381da, #f5e4d1);height: 100vh;">
+    <div *ngIf="progressSpinner" class="spinner">
+      <div class="spinner-grow text-primary" style="width: 5rem; height: 5rem;" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+</div>
+    <p *ngIf="currentView=='multi-user'" >
+      <button mat-button color="primary" #friend (click)="sidenav.toggle()">
+        Friends
+      </button>
+    </p>
+    <p *ngIf="currentView=='single-user'">
+      <button mat-button color="primary" #friend (click)="sidenav.toggle()">
+        Add a List
+      </button>
+    </p>
+    <p>
+      <button mat-button color="accent" (click)="undoHandlerButton()">
+        Undo
+      </button>
+    </p>
+
+    <div class="container">
+      <div *ngIf="!friendMode" style="margin-top: 8vh;" class="row">
+        <input type="text" [(ngModel)]="todoNameEntered" name="" id="" class="form-control col col-sm-8" #todo />
+        <input type="button" (click)="addToDo(todo.value)" value="Add Todo"
+          class="btn btn-primary col col-sm-3 offset-1" />
+      </div>
+      <span>Completed count:</span><span>{{ completedCount }}/{{ length }}</span>
+    </div>
+
+    <div id="todo-container" style="overflow-y:auto;" class="container mt-5">
+      <div class="row ">
+
+      
+
+        <div class="col-md-12">
+          <div style="display: block;">
+
+            <div style="width: 100%;" *ngFor="let todo of toDoList" class="col-12">
+              <div style="display: flex;">
+                <mat-checkbox style="display: inline;" [checked]="todo.completed" #checkbox
+                  (change)="showOptions(checkbox.checked, todo.todoId)" class="mr-2 mt-2"></mat-checkbox>
+                <div [style.textDecoration]="todo.completed ? 'line-through' : ''" class="col-md-4" style="width:14rem;height: 2rem;background-color: white;border-radius: 50px;text-overflow: ellipsis;
+             overflow: hidden;
+             white-space: nowrap;">
+                  {{ todo.todoName }}
+                </div>
+                <i (click)="openDialog(todo._id)" *ngIf="!friendMode"  matTooltip="Add a Sub Task" class="fa fa-plus ml-2 mt-2"></i>
+                <span class="dropdown">
+                  <a class="btn btn-link" id="todoDropdown" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false" matTooltip="Options for Todo">
+                    <i class="fa fa-ellipsis-h"></i>
+                  </a>
+
+                  <span class="dropdown-menu" aria-labelledby="todoDropdown">
+                    <a class="dropdown-item" (click)="updateTodo(todo.todoId)">
+                      <i class="fa fa-edit"></i> &nbsp;
+
+                      <span>Edit Task</span>
+                    </a>
+
+                    <a class="dropdown-item" [routerLink]="['/todo/todo-description/', todo.todoId]">
+                      <i class="fa fa-info-circle"></i> &nbsp;
+                      <span>View Details</span>
+                    </a>
+
+                    <a class="dropdown-item" (click)="deleteTodo(todo.todoId, todo.todoName)">
+                      <i class="fa fa-trash"></i> &nbsp;
+                      <span>Delete Task</span>
+                    </a>
+                  </span>
+                </span>
+              </div>
+
+              <div class="col-12" style="width: 100%;" *ngFor="let sub of todo.subtodo">
+                <div style="display: flex;margin-left:5vw;">
+                  <mat-checkbox [checked]="sub.completed" #subcheckbox (change)="
+                      showSubOptions(subcheckbox.checked, sub.subTodoId)
+                    " class="mr-2 mt-2"></mat-checkbox>
+                  <div [style.textDecoration]="sub.completed ? 'line-through' : ''" class="col-md-4" style="width:14rem;height: 2rem;background-color: white;border-radius: 50px;text-overflow: ellipsis;
+               overflow: hidden;
+               white-space: nowrap;">
+                    {{ sub.subTodoName }}
+                  </div>
+                  <span   class="dropdown">
+                    <a class="btn btn-link" id="subtodoDropdown" data-toggle="dropdown" aria-haspopup="true"
+                      aria-expanded="false" matTooltip="Options for sub Todo">
+                      <i class="fa fa-ellipsis-h"></i>
+                    </a>
+
+                    <span class="dropdown-menu" aria-labelledby="subtodoDropdown">
+                      <a class="dropdown-item" (click)="updatesubTodo(sub.subTodoId)">
+                        <i class="fa fa-edit"></i> &nbsp;
+
+                        <span>Edit Sub Task</span>
+                      </a>
+
+                      <a class="dropdown-item" (click)="
+                          getSubItemDetailsFunction(
+                            item.itemId,
+                            subitem.subItemId
+                          )
+                        ">
+                        <i class="fa fa-info-circle"></i> &nbsp;
+                        <span>View Details</span>
+                      </a>
+
+                      <a class="dropdown-item" (click)="deleteSubTodo(sub.subTodoId, sub.subTodoName)">
+                        <i class="fa fa-trash"></i> &nbsp;
+                        <span>Delete Sub Task</span>
+                      </a>
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="paginator-align">
+      <mat-paginator class="mat-elevation-z5 col-md-12" [length]="length" [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 10, 25, 100]" [pageIndex]="pageIndex" (page)="pageEvent = getServerData($event)">
+      </mat-paginator>
+    </div>
+
+    
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- [style.marginTop]="7 * (i + 1) + 'vh'" -->
+<!-- let i = index -->
+<!-- margin-left: -357px; -->
+
+

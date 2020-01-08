@@ -1,0 +1,37 @@
+<div>Todo Desciption</div>
+
+<mat-card>
+  <div *ngIf="todoforDescription && !friendDescription ">
+    <div>Todo Title:{{ todoforDescription.todoName | uppercase }}</div>
+    <br />
+    <div>
+      Todo Created By:{{ todoforDescription.todoCreatedBy.firstName }}
+      {{ todoforDescription.todoCreatedBy.lastName }}
+    </div>
+    <br />
+    <div>
+      Todo Modified By:{{ todoforDescription.todoModifiedBy.firstName }}
+      {{ todoforDescription.todoModifiedBy.lastName }}
+    </div>
+    <br />
+    <div>
+        Todo Complete Status:{{ todoforDescription.completed }}
+      </div>
+      <br />
+    <h5>Has subTasks</h5>
+    <div *ngFor="let subtodos of todoforDescription.subtodo" >
+        {{subtodos.subTodoName}}
+    </div>
+    <br>
+    <button mat-button  (click)="goBack()" color="accent">
+        Go Back
+      </button>
+  </div>
+</mat-card>
+
+<mat-card *ngIf="friendDescription" >
+    <div>No Description for this Notification(Either it might be deleted todos or related to friend requests or Lists or subtodos).Please Go Back</div>
+    <button mat-button  (click)="goBack()" color="accent">
+        Go Back
+      </button>
+</mat-card>

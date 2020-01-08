@@ -1,0 +1,14 @@
+.color-me {
+  font-weight: bold;
+  background-color: #48cdc8;
+}
+
+a:hover,
+a:visited,
+a:active,
+a:link {
+  color: mediumpurple;
+  text-decoration: none;
+}
+
+

@@ -1,0 +1,84 @@
+<!-- <navbar></navbar>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+    <mat-card>
+      <h3>Lists</h3>
+      <div *ngFor="let list of List">
+        <span>{{ list.ListName | uppercase }} </span>
+        <button
+          mat-button
+          color="accent"
+          (click)="addTodoUnderList(list._id); sidenav.toggle()"
+        >
+          Add Todo
+        </button>
+      </div>
+      <div>Create List</div>
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          placeholder="Create List"
+          [(ngModel)]="listName"
+          value="Sushi"
+        />
+      </mat-form-field>
+      <button mat-button (click)="createList()" color="accent">
+        Create List
+      </button>
+    </mat-card>
+  </mat-sidenav>
+
+  <mat-sidenav-content
+    style=" background-image: linear-gradient(to bottom right, #f381da, #f5e4d1);height: 95vh;"
+  >
+    <p>
+      <button mat-button color="primary" #friend (click)="sidenav.toggle()">
+        Add List
+      </button>
+    </p>
+
+    <div class="container">
+      <div style="margin-top: 8vh;" class="row">
+        <input
+          type="text"
+          name=""
+          id=""
+          class="form-control col col-sm-8"
+          #todo
+        />
+
+        <input
+          type="button"
+          (click)="addToDo(todo.value)"
+          value="Add Task"
+          class="btn btn-primary col col-sm-3 offset-1"
+        />
+
+        <mat-paginator
+          class="mat-elevation-z5"
+          [length]="length"
+          [pageSize]="pageSize"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          [pageIndex]="pageIndex"
+          (page)="pageEvent = getServerData($event)"
+        >
+        </mat-paginator>
+      </div>
+    </div>
+
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-sm-3" *ngFor="let todo of toDoList; let idx = index">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Task {{ idx + 1 }}</h5>
+              <p class="card-text">{{ todo }}</p>
+              <a href="#" class="btn btn-primary">Complete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container> -->
+<app-multi-user></app-multi-user>
